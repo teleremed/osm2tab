@@ -41,13 +41,15 @@
             this.labelMaxWays = new System.Windows.Forms.TextBox();
             this.outputFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.buttonSelectOutFolder = new System.Windows.Forms.Button();
+            this.buttonSelectInFile = new System.Windows.Forms.Button();
+            this.openOSMFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // inputTextBox
             // 
             this.inputTextBox.Location = new System.Drawing.Point(12, 29);
             this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.Size = new System.Drawing.Size(474, 20);
+            this.inputTextBox.Size = new System.Drawing.Size(465, 20);
             this.inputTextBox.TabIndex = 1;
             this.inputTextBox.Text = "http://www.openstreetmap.org/api/0.6/map?bbox=-1.080351,50.895238,-1.054516,50.90" +
                 "7688";
@@ -120,6 +122,7 @@
             this.tabPrefix.Name = "tabPrefix";
             this.tabPrefix.Size = new System.Drawing.Size(104, 20);
             this.tabPrefix.TabIndex = 13;
+            this.tabPrefix.Text = "mytab";
             // 
             // labelCurrentWay
             // 
@@ -151,11 +154,26 @@
             this.buttonSelectOutFolder.UseVisualStyleBackColor = true;
             this.buttonSelectOutFolder.Click += new System.EventHandler(this.buttonSelectOutFolder_Click);
             // 
+            // buttonSelectInFile
+            // 
+            this.buttonSelectInFile.Location = new System.Drawing.Point(483, 27);
+            this.buttonSelectInFile.Name = "buttonSelectInFile";
+            this.buttonSelectInFile.Size = new System.Drawing.Size(26, 23);
+            this.buttonSelectInFile.TabIndex = 17;
+            this.buttonSelectInFile.Text = "...";
+            this.buttonSelectInFile.UseVisualStyleBackColor = true;
+            this.buttonSelectInFile.Click += new System.EventHandler(this.buttonSelectInFile_Click);
+            // 
+            // openOSMFileDialog
+            // 
+            this.openOSMFileDialog.FileName = "openInputFileDialog";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(498, 277);
+            this.ClientSize = new System.Drawing.Size(520, 277);
+            this.Controls.Add(this.buttonSelectInFile);
             this.Controls.Add(this.buttonSelectOutFolder);
             this.Controls.Add(this.labelMaxWays);
             this.Controls.Add(this.labelCurrentWay);
@@ -190,6 +208,8 @@
         private System.Windows.Forms.TextBox labelMaxWays;
         private System.Windows.Forms.FolderBrowserDialog outputFolderBrowserDialog;
         private System.Windows.Forms.Button buttonSelectOutFolder;
+        private System.Windows.Forms.Button buttonSelectInFile;
+        private System.Windows.Forms.OpenFileDialog openOSMFileDialog;
     }
 }
 

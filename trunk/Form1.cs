@@ -247,11 +247,21 @@ namespace OSM2TAB
 
         private void buttonTestThread_Click(object sender, EventArgs e)
         {
+            bool okToProcess = true;
+
             if (outputTextBox.Text == "")
             {
                 MessageBox.Show("Please enter a folder in the 'Output' box above.\r\rYou can use the button at the right side of this box to select a folder.", "There is a problem");
+                okToProcess = false;
             }
-            else
+
+            if (inputTextBox.Text == "")
+            {
+                MessageBox.Show("Please enter a file or URL in the 'Input' box above.\r\rYou can use the button at the right side of this box to select an OSM file.", "There is a problem");
+                okToProcess = false;
+            }
+
+            if(okToProcess)
             {
                 m_myThread = new Thread(new ThreadStart(workerThread));
                 m_myThread.Start();
@@ -265,8 +275,23 @@ namespace OSM2TAB
 
         private void buttonSelectOutFolder_Click(object sender, EventArgs e)
         {
+            outputFolderBrowserDialog.Description = "Output folder for TAB files";
             outputFolderBrowserDialog.ShowDialog();
             outputTextBox.Text = outputFolderBrowserDialog.SelectedPath;
+        }
+
+        private void buttonSelectInFile_Click(object sender, EventArgs e)
+        {
+            openOSMFileDialog.FileName = "";
+            openOSMFileDialog.Multiselect = false;
+            openOSMFileDialog.Title = "Select OSM file to translate";
+            openOSMFileDialog.DefaultExt = "osm";
+            openOSMFileDialog.CheckPathExists = true;
+            openOSMFileDialog.CheckFileExists = true;
+            openOSMFileDialog.Filter = "OpenStreetMap files (*.osm)|*.osm|All files (*.*)|*.*";
+            openOSMFileDialog.ShowDialog();
+
+            inputTextBox.Text = openOSMFileDialog.FileName;
         }
     }
 }
