@@ -63,11 +63,8 @@ namespace OSM2TAB
             double[] pointsX = new double[2000];
             double[] pointsY = new double[2000];
 
-            // Download OSM data
-            //WebClient client = new WebClient();
-            //string osmXML = client.DownloadString(uriTextBox.Text);
-
-            XmlTextReader reader = new XmlTextReader("c:\\gaa\\belgium.osm");
+            // Load OSM data
+            XmlTextReader reader = new XmlTextReader(inputTextBox.Text);
 
             SortedList nodeList = new SortedList();
 
@@ -166,8 +163,9 @@ namespace OSM2TAB
             }
 
             // Create MapInfo tabs
-            IntPtr regionTabFile = MiApi.mitab_c_create("c:\\testtabs\\flap_region.tab", "tab", "Earth Projection 1, 104", 0, 0, 0, 0);
-            IntPtr lineTabFile = MiApi.mitab_c_create("c:\\testtabs\\flap_line.tab", "tab", "Earth Projection 1, 104", 0, 0, 0, 0);
+
+            IntPtr regionTabFile = MiApi.mitab_c_create(outputTextBox.Text + "\\" + tabPrefix.Text + "_region.tab", "tab", "Earth Projection 1, 104", 0, 0, 0, 0);
+            IntPtr lineTabFile = MiApi.mitab_c_create(outputTextBox.Text + "\\" + tabPrefix.Text + "_line.tab", "tab", "Earth Projection 1, 104", 0, 0, 0, 0);
 
             // Create fields
             int index = 0;
