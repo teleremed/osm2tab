@@ -39,6 +39,8 @@
             this.tabPrefix = new System.Windows.Forms.TextBox();
             this.labelCurrentWay = new System.Windows.Forms.TextBox();
             this.labelMaxWays = new System.Windows.Forms.TextBox();
+            this.outputFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.buttonSelectOutFolder = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // inputTextBox
@@ -82,9 +84,8 @@
             // 
             this.outputTextBox.Location = new System.Drawing.Point(12, 77);
             this.outputTextBox.Name = "outputTextBox";
-            this.outputTextBox.Size = new System.Drawing.Size(474, 20);
+            this.outputTextBox.Size = new System.Drawing.Size(270, 20);
             this.outputTextBox.TabIndex = 9;
-            this.outputTextBox.Text = "c:\\out";
             // 
             // label3
             // 
@@ -136,11 +137,26 @@
             this.labelMaxWays.Size = new System.Drawing.Size(100, 20);
             this.labelMaxWays.TabIndex = 15;
             // 
+            // outputFolderBrowserDialog
+            // 
+            this.outputFolderBrowserDialog.HelpRequest += new System.EventHandler(this.outputFolderBrowserDialog1_HelpRequest);
+            // 
+            // buttonSelectOutFolder
+            // 
+            this.buttonSelectOutFolder.Location = new System.Drawing.Point(288, 75);
+            this.buttonSelectOutFolder.Name = "buttonSelectOutFolder";
+            this.buttonSelectOutFolder.Size = new System.Drawing.Size(26, 23);
+            this.buttonSelectOutFolder.TabIndex = 16;
+            this.buttonSelectOutFolder.Text = "...";
+            this.buttonSelectOutFolder.UseVisualStyleBackColor = true;
+            this.buttonSelectOutFolder.Click += new System.EventHandler(this.buttonSelectOutFolder_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(498, 277);
+            this.Controls.Add(this.buttonSelectOutFolder);
             this.Controls.Add(this.labelMaxWays);
             this.Controls.Add(this.labelCurrentWay);
             this.Controls.Add(this.tabPrefix);
@@ -153,7 +169,7 @@
             this.Controls.Add(this.buttonTestThread);
             this.Controls.Add(this.inputTextBox);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "OSM2TAB";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -172,6 +188,8 @@
         private System.Windows.Forms.TextBox tabPrefix;
         private System.Windows.Forms.TextBox labelCurrentWay;
         private System.Windows.Forms.TextBox labelMaxWays;
+        private System.Windows.Forms.FolderBrowserDialog outputFolderBrowserDialog;
+        private System.Windows.Forms.Button buttonSelectOutFolder;
     }
 }
 

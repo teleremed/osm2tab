@@ -247,8 +247,26 @@ namespace OSM2TAB
 
         private void buttonTestThread_Click(object sender, EventArgs e)
         {
-            m_myThread = new Thread(new ThreadStart(workerThread));
-            m_myThread.Start();
+            if (outputTextBox.Text == "")
+            {
+                MessageBox.Show("Please enter a folder in the 'Output' box above.\r\rYou can use the button at the right side of this box to select a folder.", "There is a problem");
+            }
+            else
+            {
+                m_myThread = new Thread(new ThreadStart(workerThread));
+                m_myThread.Start();
+            }
+        }
+
+        private void outputFolderBrowserDialog1_HelpRequest(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonSelectOutFolder_Click(object sender, EventArgs e)
+        {
+            outputFolderBrowserDialog.ShowDialog();
+            outputTextBox.Text = outputFolderBrowserDialog.SelectedPath;
         }
     }
 }
