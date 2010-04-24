@@ -60,7 +60,7 @@ namespace OSM2TAB
         {
             string[] keys = { "name", "highway", "building", "landuse" };
 
-            double[] pointsX = new double[2000];
+            double[] pointsX = new double[2000]; // 2000 is 0.6 OSM spec
             double[] pointsY = new double[2000];
 
             // Load OSM data
@@ -79,6 +79,7 @@ namespace OSM2TAB
             // Cache XML file as fast-readable database in ram
             while (reader.Read())
             {
+                // Log progress
                 if (loadedNodeCount++ % 100000 == 0)
                 {
                     m_currentWay = loadedNodeCount/100000;
@@ -183,6 +184,7 @@ namespace OSM2TAB
   
             for (int i = 0; i < wayList.Count; i++)
             {
+                // Log progress
                 if (i % 10000 == 0)
                 {
                     m_currentWay = (100* i) / wayList.Count;
