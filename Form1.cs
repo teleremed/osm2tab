@@ -38,7 +38,7 @@ namespace OSM2TAB
 
         private Thread m_myThread;
         static int m_maxWays;
-        static int m_currentWay;
+        static string m_status;
         static Form1 m_myForm;
 
         public delegate void delegateSetMaxWays();
@@ -53,7 +53,7 @@ namespace OSM2TAB
         }
         public void setCurrentWay()
         {
-            labelCurrentWay.Text = m_currentWay.ToString();
+            labelCurrentWay.Text = m_status;
         }
 
         private void workerThread()
@@ -72,7 +72,7 @@ namespace OSM2TAB
 
             WayInfo currentWay = null;
 
-            m_currentWay = 1;
+            m_status = "Starting";
             m_myForm.Invoke(m_myForm.m_myCurrentWayDelegate);
 
             int loadedNodeCount = 0;
@@ -82,7 +82,7 @@ namespace OSM2TAB
                 // Log progress
                 if (loadedNodeCount++ % 100000 == 0)
                 {
-                    m_currentWay = loadedNodeCount/100000;
+                    m_status = "Loading OSM: " + Convert.ToString(loadedNodeCount/100000);
                     m_myForm.Invoke(m_myForm.m_myCurrentWayDelegate);
                 }
 
@@ -187,7 +187,7 @@ namespace OSM2TAB
                 // Log progress
                 if (i % 10000 == 0)
                 {
-                    m_currentWay = (100* i) / wayList.Count;
+                    m_status = "Translating : " + Convert.ToString((100* i) / wayList.Count) + "%";
                     m_myForm.Invoke(m_myForm.m_myCurrentWayDelegate);
                 }
 
@@ -234,7 +234,7 @@ namespace OSM2TAB
             MiApi.mitab_c_close(regionTabFile);
             MiApi.mitab_c_close(lineTabFile);
 
-            m_currentWay = 42;
+            m_status = "Done!";
             m_myForm.Invoke(m_myForm.m_myCurrentWayDelegate);
         }
 
