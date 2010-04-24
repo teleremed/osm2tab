@@ -33,7 +33,7 @@ namespace OSM2TAB
             public int id;
             public bool corrupt = false;
             public ArrayList nodes;
-            public ArrayList tags;
+            public SortedList tags;
         }
 
         private Thread m_myThread;
@@ -75,6 +75,10 @@ namespace OSM2TAB
             m_status = "Starting";
             m_myForm.Invoke(m_myForm.m_myCurrentWayDelegate);
 
+            // Used to calculate TAB database field format
+            needs to Be an Array , cant use otherwise all fields will Get same width. even simple ones
+            int longestString = 0;
+
             int loadedNodeCount = 0;
             // Cache XML file as fast-readable database in ram
             while (reader.Read())
@@ -111,7 +115,7 @@ namespace OSM2TAB
                         {  
                             WayInfo way = new WayInfo();
                             way.nodes = new ArrayList();
-                            way.tags = new ArrayList();
+                            way.tags = new SortedList();
 
                             way.id = Convert.ToInt32(reader.GetAttribute("id"));
                             // this can be a duplicate in an error in the osm data
@@ -152,11 +156,21 @@ namespace OSM2TAB
                                 TagInfo ki = new TagInfo();
                                 ki.k = reader.GetAttribute("k");
                                 ki.v = reader.GetAttribute("v");
-                                currentWay.tags.Add(ki);
+                                currentWay.tags.Add(ki.k, ki);
+
+                                // log longest string
+                                if (ki.v.Length > longestString)
+                                    longestString = ki.v.Length;
                             }
                             //else if (currentRelation blah blah != null)
                             //{
                             //}
+                        }
+                        else if (reader.Name.Equals("relation"))
+                        {
+                            currentWay = null;
+                            int a = 0;
+                            int b = a + 1;
                         }
                         break;
                     }
@@ -216,15 +230,36 @@ namespace OSM2TAB
 
                 if (iAmARegion && nodes.Count >=3)
                 {
+                    // Region
                     IntPtr feat = MiApi.mitab_c_create_feature(regionTabFile, 7);
-                    MiApi.mitab_c_set_points(feat, -1, nodes.Count - 1, pointsX, pointsY);
+                    // 'part' param is -1 for single part regions. Need to use relation nodes to add 'holes' to -1 part polys which have poly numbers 1+ 
+                    MiApi.mitab_c_set_points(feat, -1, nodes.Count - 1, pointsX, pointsY); // nodes.Count -1 as last and first nodes are the same
+                    int gti = 0; // get tag info
+                    foreach (string key in keys)
+                    {
+                        TagInfo tag = (TagInfo)way.tags[key];
+                        if (tag != null) // Not every field is used
+                            MiApi.mitab_c_set_field(feat, gti, tag.v);
+
+                        gti++;
+                    }
                     MiApi.mitab_c_write_feature(regionTabFile, feat);
                     MiApi.mitab_c_destroy_feature(feat);
                 }
                 else if (nodes.Count >= 2)
                 {
+                    // Line
                     IntPtr feat = MiApi.mitab_c_create_feature(regionTabFile, 5);
-                    MiApi.mitab_c_set_points(feat, 0, nodes.Count, pointsX, pointsY);
+                    MiApi.mitab_c_set_points(feat, 0, nodes.Count, pointsX, pointsY); // part is 0 - can we use relation nodes to associate further (>0) parts?
+                    int gti = 0; // get tag info
+                    foreach (string key in keys)
+                    {
+                        TagInfo tag = (TagInfo)way.tags[key];
+                        if(tag != null) // Not every field is used
+                            MiApi.mitab_c_set_field(feat, gti, tag.v);
+
+                        gti++;
+                    }
                     MiApi.mitab_c_write_feature(lineTabFile, feat);
                     MiApi.mitab_c_destroy_feature(feat);
                 }
@@ -235,6 +270,7 @@ namespace OSM2TAB
             MiApi.mitab_c_close(lineTabFile);
 
             m_status = "Done!";
+            m_status = longestString.ToString();
             m_myForm.Invoke(m_myForm.m_myCurrentWayDelegate);
         }
 
