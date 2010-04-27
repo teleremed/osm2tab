@@ -171,8 +171,10 @@ namespace OSM2TAB
                                 currentWay.tags.Add(ki.k, ki);
 
                                 // Update max key name size for MI tab field width
+                                // Each Key
                                 if (!tagKeyLengthList.Contains(ki.k))
                                 {
+                                    // If there is not a 
                                     TagKeyLength tkl = new TagKeyLength();
                                     tkl.k = ki.k;
                                     tkl.max = ki.v.Length;
@@ -184,9 +186,7 @@ namespace OSM2TAB
                                     if (tkl.max < ki.v.Length)
                                         tkl.max = ki.v.Length;
                                 }   
-                                need to use the above cached MaximizeBox field lengths
-                                when creating MI fields
-
+                                
                                 // log longest string
                                 if (ki.v.Length > longestString)
                                     longestString = ki.v.Length;
@@ -214,8 +214,11 @@ namespace OSM2TAB
             int index = 0;
             foreach (string key in keys)
             {
-                MiApi.mitab_c_add_field(regionTabFile, key, 1, m_cFieldSize, 0, 0, 0);
-                MiApi.mitab_c_add_field(lineTabFile, key, 1, m_cFieldSize, 0, 0, 0);
+                // Get max field width
+                TagKeyLength tkl = (TagKeyLength)tagKeyLengthList[key];
+
+                MiApi.mitab_c_add_field(regionTabFile, key, 1, tkl.max, 0, 0, 0);
+                MiApi.mitab_c_add_field(lineTabFile, key, 1, tkl.max, 0, 0, 0);
 
                 index++;
             }
@@ -224,6 +227,7 @@ namespace OSM2TAB
             m_maxWays = wayList.Count;
             m_myForm.Invoke(m_myForm.m_myMaxWaysDelegate);
   
+            // Lines and Regions
             for (int i = 0; i < wayList.Count; i++)
             {
                 // Log progress
