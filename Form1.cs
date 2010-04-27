@@ -36,10 +36,18 @@ namespace OSM2TAB
             public SortedList tags;
         }
 
+        // Storage of max Tag Key string length
+        public class TagKeyLength
+        {
+            public int max;
+            public string k;
+        }
+
         private Thread m_myThread;
         static int m_maxWays;
         static string m_status;
         static Form1 m_myForm;
+        const int m_cFieldSize = 64;
 
         public delegate void delegateSetMaxWays();
         public delegate void delegateSetCurrentWay();
@@ -70,13 +78,17 @@ namespace OSM2TAB
 
             SortedList wayList = new SortedList();
 
+            SortedList tagKeyLengthList = new SortedList();
+
             WayInfo currentWay = null;
 
+           
             m_status = "Starting";
             m_myForm.Invoke(m_myForm.m_myCurrentWayDelegate);
 
             // Used to calculate TAB database field format
-            needs to Be an Array , cant use otherwise all fields will Get same width. even simple ones
+            //needs to Be an Array of longest strings per field otherwise all fields will Get same width. even simple ones
+            //but field widths should be consistent so what do we do
             int longestString = 0;
 
             int loadedNodeCount = 0;
@@ -158,6 +170,23 @@ namespace OSM2TAB
                                 ki.v = reader.GetAttribute("v");
                                 currentWay.tags.Add(ki.k, ki);
 
+                                // Update max key name size for MI tab field width
+                                if (!tagKeyLengthList.Contains(ki.k))
+                                {
+                                    TagKeyLength tkl = new TagKeyLength();
+                                    tkl.k = ki.k;
+                                    tkl.max = ki.v.Length;
+                                    tagKeyLengthList.Add(ki.k, tkl);
+                                }
+                                else
+                                {
+                                    TagKeyLength tkl = (TagKeyLength)tagKeyLengthList[ki.k];
+                                    if (tkl.max < ki.v.Length)
+                                        tkl.max = ki.v.Length;
+                                }   
+                                need to use the above cached MaximizeBox field lengths
+                                when creating MI fields
+
                                 // log longest string
                                 if (ki.v.Length > longestString)
                                     longestString = ki.v.Length;
@@ -178,7 +207,6 @@ namespace OSM2TAB
             }
 
             // Create MapInfo tabs
-
             IntPtr regionTabFile = MiApi.mitab_c_create(outputTextBox.Text + "\\" + tabPrefix.Text + "_region.tab", "tab", "Earth Projection 1, 104", 0, 0, 0, 0);
             IntPtr lineTabFile = MiApi.mitab_c_create(outputTextBox.Text + "\\" + tabPrefix.Text + "_line.tab", "tab", "Earth Projection 1, 104", 0, 0, 0, 0);
 
@@ -186,8 +214,8 @@ namespace OSM2TAB
             int index = 0;
             foreach (string key in keys)
             {
-                MiApi.mitab_c_add_field(regionTabFile, key, 1, 64, 0, 0, 0);
-                MiApi.mitab_c_add_field(lineTabFile, key, 1, 64, 0, 0, 0);
+                MiApi.mitab_c_add_field(regionTabFile, key, 1, m_cFieldSize, 0, 0, 0);
+                MiApi.mitab_c_add_field(lineTabFile, key, 1, m_cFieldSize, 0, 0, 0);
 
                 index++;
             }
@@ -231,7 +259,7 @@ namespace OSM2TAB
                 if (iAmARegion && nodes.Count >=3)
                 {
                     // Region
-                    IntPtr feat = MiApi.mitab_c_create_feature(regionTabFile, 7);
+                    IntPtr feat = MiApi.mitab_c_create_feature(regionTabFile, 7); // 7 = region
                     // 'part' param is -1 for single part regions. Need to use relation nodes to add 'holes' to -1 part polys which have poly numbers 1+ 
                     MiApi.mitab_c_set_points(feat, -1, nodes.Count - 1, pointsX, pointsY); // nodes.Count -1 as last and first nodes are the same
                     int gti = 0; // get tag info
@@ -249,7 +277,7 @@ namespace OSM2TAB
                 else if (nodes.Count >= 2)
                 {
                     // Line
-                    IntPtr feat = MiApi.mitab_c_create_feature(regionTabFile, 5);
+                    IntPtr feat = MiApi.mitab_c_create_feature(regionTabFile, 5); // 5 = region
                     MiApi.mitab_c_set_points(feat, 0, nodes.Count, pointsX, pointsY); // part is 0 - can we use relation nodes to associate further (>0) parts?
                     int gti = 0; // get tag info
                     foreach (string key in keys)
