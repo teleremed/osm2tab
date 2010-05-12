@@ -43,6 +43,8 @@
             this.buttonSelectOutFolder = new System.Windows.Forms.Button();
             this.buttonSelectInFile = new System.Windows.Forms.Button();
             this.openOSMFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.themeTextBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // inputTextBox
@@ -51,8 +53,7 @@
             this.inputTextBox.Name = "inputTextBox";
             this.inputTextBox.Size = new System.Drawing.Size(465, 20);
             this.inputTextBox.TabIndex = 1;
-            this.inputTextBox.Text = "http://www.openstreetmap.org/api/0.6/map?bbox=-1.080351,50.895238,-1.054516,50.90" +
-                "7688";
+            this.inputTextBox.Text = "c:\\osm\\luxembourg.osm";
             // 
             // buttonTestThread
             // 
@@ -88,6 +89,7 @@
             this.outputTextBox.Name = "outputTextBox";
             this.outputTextBox.Size = new System.Drawing.Size(270, 20);
             this.outputTextBox.TabIndex = 9;
+            this.outputTextBox.Text = "c:\\osm";
             // 
             // label3
             // 
@@ -168,11 +170,30 @@
             // 
             this.openOSMFileDialog.FileName = "openInputFileDialog";
             // 
+            // themeTextBox
+            // 
+            this.themeTextBox.Location = new System.Drawing.Point(12, 277);
+            this.themeTextBox.Name = "themeTextBox";
+            this.themeTextBox.Size = new System.Drawing.Size(270, 20);
+            this.themeTextBox.TabIndex = 18;
+            this.themeTextBox.Text = "C:\\osm\\theme.xml";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 261);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(40, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Theme";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(520, 277);
+            this.ClientSize = new System.Drawing.Size(520, 321);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.themeTextBox);
             this.Controls.Add(this.buttonSelectInFile);
             this.Controls.Add(this.buttonSelectOutFolder);
             this.Controls.Add(this.labelMaxWays);
@@ -210,6 +231,8 @@
         private System.Windows.Forms.Button buttonSelectOutFolder;
         private System.Windows.Forms.Button buttonSelectInFile;
         private System.Windows.Forms.OpenFileDialog openOSMFileDialog;
+        private System.Windows.Forms.TextBox themeTextBox;
+        private System.Windows.Forms.Label label6;
     }
 }
 

@@ -64,10 +64,20 @@ namespace OSM2TAB
             labelCurrentWay.Text = m_status;
         }
 
+        // http://www.openstreetmap.org/api/0.6/map?bbox=-1.080351,50.895238,-1.054516,50.907688
         private void workerThread()
         {
-            string[] keys = { "name", "highway", "building", "landuse" };
-
+            // Load Theme data
+            ArrayList keys = new ArrayList();
+            XmlDocument themeDoc = new XmlDocument();
+            themeDoc.Load(themeTextBox.Text);
+            // Load key list
+            XmlNodeList keyNodeList = themeDoc.SelectNodes("osm2tab/keys/key");
+            foreach (XmlNode keyNode in keyNodeList)
+            {
+                keys.Add(keyNode.SelectSingleNode("@name").Value);
+            }
+            
             double[] pointsX = new double[2000]; // 2000 is 0.6 OSM spec
             double[] pointsY = new double[2000];
 
@@ -217,8 +227,17 @@ namespace OSM2TAB
                 // Get max field width
                 TagKeyLength tkl = (TagKeyLength)tagKeyLengthList[key];
 
-                MiApi.mitab_c_add_field(regionTabFile, key, 1, tkl.max, 0, 0, 0);
-                MiApi.mitab_c_add_field(lineTabFile, key, 1, tkl.max, 0, 0, 0);
+                if (tkl != null)
+                {
+                    MiApi.mitab_c_add_field(regionTabFile, key, 1, tkl.max, 0, 0, 0);
+                    MiApi.mitab_c_add_field(lineTabFile, key, 1, tkl.max, 0, 0, 0);
+                }
+                else
+                {
+                    // No key exists in the dataset so there is no max length - make it 32
+                    MiApi.mitab_c_add_field(regionTabFile, key, 1, 32, 0, 0, 0);
+                    MiApi.mitab_c_add_field(lineTabFile, key, 1, 32, 0, 0, 0);
+                }
 
                 index++;
             }
@@ -275,6 +294,33 @@ namespace OSM2TAB
 
                         gti++;
                     }
+
+                    // Set Region Style
+                    XmlNodeList styleNodeList = themeDoc.SelectNodes("osm2tab/regionStyles/style");
+                    foreach (XmlNode styleNode in styleNodeList)
+                    {
+                        string styleKey = styleNode.SelectSingleNode("@key").Value;
+                        TagInfo tag = (TagInfo)way.tags[styleKey];
+                        if (tag != null) // Not every field is used
+                        {
+                            string styleKeyValue = styleNode.SelectSingleNode("@value").Value;
+                            if (tag.v == styleKeyValue)
+                            {
+                                int pattern = Convert.ToInt32(styleNode.SelectSingleNode("@pattern").Value);
+                                int foreground = Convert.ToInt32(styleNode.SelectSingleNode("@foreground").Value);
+                                int background = Convert.ToInt32(styleNode.SelectSingleNode("@background").Value);
+                                int transparent = Convert.ToInt32(styleNode.SelectSingleNode("@transparent").Value);
+
+                                int penPattern = Convert.ToInt32(styleNode.SelectSingleNode("@penPattern").Value);
+                                int penColour = Convert.ToInt32(styleNode.SelectSingleNode("@penColour").Value);
+                                int penWidth = Convert.ToInt32(styleNode.SelectSingleNode("@penWidth").Value);
+
+                                MiApi.mitab_c_set_brush(feat, foreground, background, pattern, transparent);
+                                MiApi.mitab_c_set_pen(feat, penWidth, penPattern, penColour);
+                            }
+                        }
+                    }
+
                     MiApi.mitab_c_write_feature(regionTabFile, feat);
                     MiApi.mitab_c_destroy_feature(feat);
                 }
