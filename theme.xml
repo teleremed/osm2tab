@@ -5,10 +5,121 @@
       <key name="name"/>
       <key name="highway"/>
       <key name="building"/>
+      <key name="cycleway"/>
+      <key name="waterway"/>
+      <key name="railway"/>
+      <key name="aeroway"/>
+      <key name="aerialway"/>
+      <key name="power"/>
+      <key name="man_made"/>
+      <key name="leisure"/>
+      <key name="amenity"/>
+      <key name="office"/>
+      <key name="shop"/>
+      <key name="tourism"/>
+      <key name="historic"/>
+      <key name="landuse"/>
+      <key name="military"/>
+      <key name="natural"/>
+      <key name="sport"/>
+      <key name="geological"/>
+      <key name="boundary"/>
+      <key name="barrier"/>
+      <key name="junction"/>
+      <key name="construction"/>
+      <key name="traffic_calming"/>
+      <key name="passing_places"/>
+      <key name="proposed"/>
+      <key name="tracktype"/>
+      <key name="service"/>
+      <key name="abutters"/>
+      <key name="route"/>
+      <key name="lock"/>
+      <key name="mooring"/>
+      <key name="bridge"/>
+      <key name="place"/>
    </keys>
    
    <regionStyles>
-      <style key="building" value="yes" pattern="2" foreground="12829635" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="building" pattern="2" foreground="12829635" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      
+      <style key="landuse" pattern="2" foreground="16711920" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      
+      <style key="landuse" value="industrial" pattern="2" foreground="10724259" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="residential" pattern="2" foreground="16767411" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="leisure" value="pitch" pattern="2" foreground="8126356" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      
+      <style key="landuse" value="forest" pattern="2" foreground="9625949" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      
+      <style key="highway" value="raceway" pattern="2" foreground="10724259" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      
+      <style key="waterway" value="river" pattern="2" foreground="7586559" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="reservoir" pattern="2" foreground="7586559" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="farm" pattern="2" foreground="15902556" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      
+      <style key="military" value="barracks" pattern="2" foreground="3787403" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      
+      <style key="landuse" value="meadow" pattern="2" foreground="12124025" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
    </regionStyles>
+   
+<lineStyles>
+         <style key="landuse" value="forest" penPattern="2" penColour="9625949" penWidth="2"/>
+         
+         <style key="highway" penPattern="2" penColour="13672551" penWidth="2"/>
+         
+         <style key="highway" value="steps" penPattern="2" penColour="13487565" penWidth="3"/>
+         <style key="highway" value="bridleway" penPattern="2" penColour="13672551" penWidth="2"/>
+         <style key="highway" value="track" penPattern="2" penColour="13672551" penWidth="2"/>
+         
+         <style key="highway" value="path" penPattern="2" penColour="13672551" penWidth="2"/>
+         <style key="highway" value="footway" penPattern="2" penColour="13487565" penWidth="2"/>
+         <style key="highway" value="living_street" penPattern="2" penColour="13487565" penWidth="2"/>
+         <style key="highway" value="pedestrian" penPattern="2" penColour="13487565" penWidth="2"/>
+         <style key="highway" value="service" penPattern="2" penColour="14737632" penWidth="2"/>
+         <style key="highway" value="residential" penPattern="2" penColour="14737632" penWidth="3"/>
+         <style key="highway" value="unclassified" penPattern="2" penColour="14737632" penWidth="3"/>
+         <style key="highway" value="tertiary" penPattern="2" penColour="16773120" penWidth="3"/>
+         <style key="highway" value="road" penPattern="2" penColour="16773120" penWidth="3"/>
+         <style key="highway" value="secondary" penPattern="2" penColour="16760832" penWidth="3"/>
+         <style key="highway" value="primary" penPattern="2" penColour="16751616" penWidth="3"/>
+         <style key="highway" value="primary_link" penPattern="2" penColour="16751616" penWidth="3"/>
+         <style key="highway" value="trunk" penPattern="2" penColour="16727040" penWidth="3"/>
+         <style key="highway" value="trunk_link" penPattern="2" penColour="16727040" penWidth="3"/>
+         <style key="highway" value="motorway" penPattern="2" penColour="3904511" penWidth="3"/>
+         <style key="highway" value="motorway_link" penPattern="2" penColour="3904511" penWidth="3"/>
+         <style key="highway" value="construction" penPattern="4" penColour="10724259" penWidth="3"/>
+         
+         <style key="tracktype" value="grade1" penPattern="2" penColour="13672551" penWidth="2"/>
+         <style key="tracktype" value="grade2" penPattern="2" penColour="13672551" penWidth="2"/>
+         <style key="tracktype" value="grade3" penPattern="2" penColour="13672551" penWidth="2"/>
+         <style key="tracktype" value="grade4" penPattern="2" penColour="13672551" penWidth="2"/>
+         
+         <style key="highway" value="cycleway" penPattern="2" penColour="16752103" penWidth="2"/>
+         <style key="cycleway" value="track" penPattern="2" penColour="16752103" penWidth="2"/>
+         
+         <style key="waterway" penPattern="2" penColour="7586559" penWidth="2"/>
+         <style key="waterway" value="river" penPattern="2" penColour="7586559" penWidth="3"/>
+         <style key="waterway" value="stream" penPattern="2" penColour="7586559" penWidth="2"/>
+         <style key="natural" value="water" penPattern="2" penColour="7586559" penWidth="2"/>
+         
+         <style key="barrier" penPattern="2" penColour="13406797" penWidth="2"/>
+         
+         <style key="boundary" value="administrative" penPattern="1" penColour="0" penWidth="1"/>
+         
+         <style key="railway" penPattern="2" penColour="0" penWidth="2"/>
+         <style key="railway" value="rail" penPattern="2" penColour="0" penWidth="2"/>
+         <style key="railway" value="preserved" penPattern="2" penColour="0" penWidth="2"/>
+         <style key="railway" value="disused" penPattern="4" penColour="0" penWidth="2"/>
+         <style key="railway" value="abandoned" penPattern="4" penColour="0" penWidth="2"/>
+         
+         <style key="natural" value="cliff" penPattern="53" penColour="13406797" penWidth="1"/>
+         
+         <style key="aeroway" penPattern="2" penColour="12493567" penWidth="2"/>
+         <style key="aeroway" value="runway" penPattern="2" penColour="12493567" penWidth="3"/>
+         <style key="aeroway" value="taxiway" penPattern="2" penColour="12493567" penWidth="2"/>
+         <style key="aeroway" value="gate" penPattern="2" penColour="12493567" penWidth="2"/>
+         
+         <style key="power" penPattern="28" penColour="0" penWidth="1"/>
+   </lineStyles>
 
 </osm2tab>
