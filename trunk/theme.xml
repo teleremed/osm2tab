@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<osm2tab version="0.1">
+   <keys>
+      <key name="name"/>
+      <key name="highway"/>
+      <key name="building"/>
+   </keys>
+   
+   <regionStyles>
+      <style key="building" value="yes" pattern="2" foreground="12829635" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+   </regionStyles>
+
+</osm2tab>
