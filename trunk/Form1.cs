@@ -303,8 +303,12 @@ namespace OSM2TAB
                         TagInfo tag = (TagInfo)way.tags[styleKey];
                         if (tag != null) // Not every field is used
                         {
-                            string styleKeyValue = styleNode.SelectSingleNode("@value").Value;
-                            if (tag.v == styleKeyValue)
+                            XmlNode valueAttribute = styleNode.SelectSingleNode("@value");
+                            string styleKeyValue = "";
+                            if (valueAttribute != null)
+                                styleKeyValue = valueAttribute.Value;
+                            // If there is no value attribute for this key then all features with this key have style applied
+                            if (tag.v == styleKeyValue || valueAttribute == null)
                             {
                                 int pattern = Convert.ToInt32(styleNode.SelectSingleNode("@pattern").Value);
                                 int foreground = Convert.ToInt32(styleNode.SelectSingleNode("@foreground").Value);
