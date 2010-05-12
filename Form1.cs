@@ -69,10 +69,13 @@ namespace OSM2TAB
         {
             // Load Theme data
             ArrayList keys = new ArrayList();
+            //ArrayList allWayTags = new ArrayList(); // All keys in all ways
+
             XmlDocument themeDoc = new XmlDocument();
             themeDoc.Load(themeTextBox.Text);
             // Load key list
             XmlNodeList keyNodeList = themeDoc.SelectNodes("osm2tab/keys/key");
+
             foreach (XmlNode keyNode in keyNodeList)
             {
                 keys.Add(keyNode.SelectSingleNode("@name").Value);
@@ -80,6 +83,23 @@ namespace OSM2TAB
             
             double[] pointsX = new double[2000]; // 2000 is 0.6 OSM spec
             double[] pointsY = new double[2000];
+
+            // Optimal settings?
+            // 1. Don't add features that don't match 'style key's in the theme
+            // 2. <next criteria of optimal>
+            // 3. <next criteria of optimal>
+                // Regions
+                bool optimalRegions = false;
+                XmlNode regionStylesNode = themeDoc.SelectSingleNode("osm2tab/regionStyles");
+                XmlNode optimalRegionStylesNode = regionStylesNode.SelectSingleNode("@optimal");
+                if(optimalRegionStylesNode != null)
+                    optimalRegions = optimalRegionStylesNode.Value == "yes";
+                // Lines
+                bool optimalLines = false;
+                XmlNode lineStylesNode = themeDoc.SelectSingleNode("osm2tab/lineStyles");
+                XmlNode optimalLineStylesNode = lineStylesNode.SelectSingleNode("@optimal");
+                if (optimalLineStylesNode != null)
+                    optimalLines = optimalLineStylesNode.Value == "yes";
 
             // Load OSM data
             XmlTextReader reader = new XmlTextReader(inputTextBox.Text);
@@ -130,8 +150,6 @@ namespace OSM2TAB
                             {
                                 // need to trace data source error
                             }
-
-
                         }
                         else if (reader.Name.Equals("way"))
                         {  
@@ -179,6 +197,10 @@ namespace OSM2TAB
                                 ki.k = reader.GetAttribute("k");
                                 ki.v = reader.GetAttribute("v");
                                 currentWay.tags.Add(ki.k, ki);
+
+                                // Compile list of tags for TAB fields if not specified in theme.xml
+                                if ((keyNodeList.Count == 0) && !keys.Contains(ki.k))
+                                    keys.Add(ki.k);
 
                                 // Update max key name size for MI tab field width
                                 // Each Key
@@ -297,6 +319,8 @@ namespace OSM2TAB
 
                     // Set Region Style
                     XmlNodeList styleNodeList = themeDoc.SelectNodes("osm2tab/regionStyles/style");
+                    bool styleFoundForThisFeature = false; // Used in conjunction with 'optimal' region option
+
                     foreach (XmlNode styleNode in styleNodeList)
                     {
                         string styleKey = styleNode.SelectSingleNode("@key").Value;
@@ -321,11 +345,17 @@ namespace OSM2TAB
 
                                 MiApi.mitab_c_set_brush(feat, foreground, background, pattern, transparent);
                                 MiApi.mitab_c_set_pen(feat, penWidth, penPattern, penColour);
+
+                                styleFoundForThisFeature = true;
                             }
                         }
                     }
 
-                    MiApi.mitab_c_write_feature(regionTabFile, feat);
+                    if(!(!styleFoundForThisFeature && optimalRegions)) // Only write feature to TAB if style is specified
+                    {
+                        MiApi.mitab_c_write_feature(regionTabFile, feat);
+                    }
+
                     MiApi.mitab_c_destroy_feature(feat);
                 }
                 else if (nodes.Count >= 2)
@@ -345,6 +375,8 @@ namespace OSM2TAB
 
                     // Set Line Style
                     XmlNodeList styleNodeList = themeDoc.SelectNodes("osm2tab/lineStyles/style");
+
+                    bool styleFoundForThisFeature = false; // Used in conjunction with 'optimal' line option
                     foreach (XmlNode styleNode in styleNodeList)
                     {
                         string styleKey = styleNode.SelectSingleNode("@key").Value;
@@ -363,11 +395,17 @@ namespace OSM2TAB
                                 int penWidth = Convert.ToInt32(styleNode.SelectSingleNode("@penWidth").Value);
 
                                 MiApi.mitab_c_set_pen(feat, penWidth, penPattern, penColour);
+
+                                styleFoundForThisFeature = true;
                             }
                         }
                     }
 
-                    MiApi.mitab_c_write_feature(lineTabFile, feat);
+                    if (!(!styleFoundForThisFeature && optimalLines)) // Only write feature to TAB if style is specified
+                    {
+                        MiApi.mitab_c_write_feature(lineTabFile, feat);
+                    }
+
                     MiApi.mitab_c_destroy_feature(feat);
                 }
                 
