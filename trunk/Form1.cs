@@ -338,6 +338,27 @@ namespace OSM2TAB
 
                         gti++;
                     }
+
+                    // Set Line Style
+                    XmlNodeList styleNodeList = themeDoc.SelectNodes("osm2tab/lineStyles/style");
+                    foreach (XmlNode styleNode in styleNodeList)
+                    {
+                        string styleKey = styleNode.SelectSingleNode("@key").Value;
+                        TagInfo tag = (TagInfo)way.tags[styleKey];
+                        if (tag != null) // Not every field is used
+                        {
+                            string styleKeyValue = styleNode.SelectSingleNode("@value").Value;
+                            if (tag.v == styleKeyValue)
+                            {
+                                int penPattern = Convert.ToInt32(styleNode.SelectSingleNode("@penPattern").Value);
+                                int penColour = Convert.ToInt32(styleNode.SelectSingleNode("@penColour").Value);
+                                int penWidth = Convert.ToInt32(styleNode.SelectSingleNode("@penWidth").Value);
+
+                                MiApi.mitab_c_set_pen(feat, penWidth, penPattern, penColour);
+                            }
+                        }
+                    }
+
                     MiApi.mitab_c_write_feature(lineTabFile, feat);
                     MiApi.mitab_c_destroy_feature(feat);
                 }
