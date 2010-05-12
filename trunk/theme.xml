@@ -44,22 +44,39 @@
       <style key="building" pattern="2" foreground="12829635" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       
       <style key="landuse" pattern="2" foreground="16711920" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="tourism" pattern="2" foreground="4194269" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       
+      <style key="landuse" value="quarry" pattern="2" foreground="9208431" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="commercial" pattern="2" foreground="15714815" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       <style key="landuse" value="industrial" pattern="2" foreground="10724259" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="construction" pattern="2" foreground="10724259" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="railway" pattern="2" foreground="10724259" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       <style key="landuse" value="residential" pattern="2" foreground="16767411" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       <style key="leisure" value="pitch" pattern="2" foreground="8126356" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="cemetery" pattern="2" foreground="8126356" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="retail" pattern="2" foreground="8890111" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      
+      <style key="landuse" value="military" pattern="2" foreground="3787403" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       
       <style key="landuse" value="forest" pattern="2" foreground="9625949" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="allotments" pattern="2" foreground="9625949" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       
       <style key="highway" value="raceway" pattern="2" foreground="10724259" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       
       <style key="waterway" value="river" pattern="2" foreground="7586559" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       <style key="landuse" value="reservoir" pattern="2" foreground="7586559" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       <style key="landuse" value="farm" pattern="2" foreground="15902556" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="farmland" pattern="2" foreground="15902556" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="farmyard" pattern="2" foreground="15902556" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       
       <style key="military" value="barracks" pattern="2" foreground="3787403" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
       
       <style key="landuse" value="meadow" pattern="2" foreground="12124025" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="grass" pattern="2" foreground="12124025" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="greenfield" pattern="2" foreground="12124025" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      <style key="landuse" value="village_green" pattern="2" foreground="12124025" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
+      
+      <style key="natural" value="water" pattern="2" foreground="7586559" background="0" transparent="0" penPattern="1" penColour="0" penWidth="1"/>
    </regionStyles>
    
 <lineStyles>
