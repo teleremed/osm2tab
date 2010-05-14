@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.inputTextBox = new System.Windows.Forms.TextBox();
-            this.buttonTestThread = new System.Windows.Forms.Button();
+            this.buttonGo = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.outputTextBox = new System.Windows.Forms.TextBox();
@@ -45,6 +45,7 @@
             this.openOSMFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.themeTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.debugTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // inputTextBox
@@ -55,15 +56,15 @@
             this.inputTextBox.TabIndex = 1;
             this.inputTextBox.Text = "c:\\osm\\luxembourg.osm";
             // 
-            // buttonTestThread
+            // buttonGo
             // 
-            this.buttonTestThread.Location = new System.Drawing.Point(207, 228);
-            this.buttonTestThread.Name = "buttonTestThread";
-            this.buttonTestThread.Size = new System.Drawing.Size(75, 23);
-            this.buttonTestThread.TabIndex = 6;
-            this.buttonTestThread.Text = "Go!";
-            this.buttonTestThread.UseVisualStyleBackColor = true;
-            this.buttonTestThread.Click += new System.EventHandler(this.buttonTestThread_Click);
+            this.buttonGo.Location = new System.Drawing.Point(207, 228);
+            this.buttonGo.Name = "buttonGo";
+            this.buttonGo.Size = new System.Drawing.Size(75, 23);
+            this.buttonGo.TabIndex = 6;
+            this.buttonGo.Text = "Go!";
+            this.buttonGo.UseVisualStyleBackColor = true;
+            this.buttonGo.Click += new System.EventHandler(this.buttonTestThread_Click);
             // 
             // label1
             // 
@@ -187,11 +188,20 @@
             this.label6.TabIndex = 19;
             this.label6.Text = "Theme";
             // 
+            // debugTextBox
+            // 
+            this.debugTextBox.Location = new System.Drawing.Point(333, 77);
+            this.debugTextBox.Multiline = true;
+            this.debugTextBox.Name = "debugTextBox";
+            this.debugTextBox.Size = new System.Drawing.Size(263, 220);
+            this.debugTextBox.TabIndex = 20;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(520, 321);
+            this.ClientSize = new System.Drawing.Size(625, 321);
+            this.Controls.Add(this.debugTextBox);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.themeTextBox);
             this.Controls.Add(this.buttonSelectInFile);
@@ -205,7 +215,7 @@
             this.Controls.Add(this.outputTextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.buttonTestThread);
+            this.Controls.Add(this.buttonGo);
             this.Controls.Add(this.inputTextBox);
             this.Name = "Form1";
             this.Text = "OSM2TAB";
@@ -217,7 +227,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox inputTextBox;
-        private System.Windows.Forms.Button buttonTestThread;
+        private System.Windows.Forms.Button buttonGo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox outputTextBox;
@@ -233,6 +243,7 @@
         private System.Windows.Forms.OpenFileDialog openOSMFileDialog;
         private System.Windows.Forms.TextBox themeTextBox;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox debugTextBox;
     }
 }
 
