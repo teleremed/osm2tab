@@ -44,16 +44,23 @@ namespace OSM2TAB
         }
 
         private Thread m_myThread;
-        static int m_maxWays;
-        static string m_status;
+        static int m_maxWays; // Cross-thread
+        static string m_status; // Cross-thread
+        static string m_debug; // Cross-thread
+        static bool m_goButtonEnabled = true; // Cross-thread
         static Form1 m_myForm;
         const int m_cFieldSize = 64;
 
         public delegate void delegateSetMaxWays();
         public delegate void delegateSetCurrentWay();
+        public delegate void delegateSetDebug();
+        public delegate void delegateGoButtonEnabled();
+
         
         public delegateSetMaxWays m_myMaxWaysDelegate;
         public delegateSetCurrentWay m_myCurrentWayDelegate;
+        public delegateSetDebug m_myDebugDelegate;
+        public delegateGoButtonEnabled m_myGoButtonEnabledDelegate;
 
         public void setMaxWays()
         {
@@ -63,10 +70,22 @@ namespace OSM2TAB
         {
             labelCurrentWay.Text = m_status;
         }
+        public void setDebug()
+        {
+            debugTextBox.Text = m_debug;
+        }
+        public void setGoButtonEnabled()
+        {
+            buttonGo.Enabled = m_goButtonEnabled;
+        }
 
         // http://www.openstreetmap.org/api/0.6/map?bbox=-1.080351,50.895238,-1.054516,50.907688
         private void workerThread()
         {
+            // Disable 'Go' button until processing is done
+            m_goButtonEnabled = false;
+            m_myForm.Invoke(m_myForm.m_myGoButtonEnabledDelegate);
+
             // Load Theme data
             ArrayList keys = new ArrayList();
             //ArrayList allWayTags = new ArrayList(); // All keys in all ways
@@ -244,6 +263,17 @@ namespace OSM2TAB
 
             // Create fields
             int index = 0;
+
+            // Max MapInfo fields is 255 (not 256 it seems)
+            if (keys.Count > 255)
+            {
+                m_debug += "Too many fields";
+                m_myForm.Invoke(m_myForm.m_myDebugDelegate);
+
+                int amountToReduce = keys.Count - 255;
+                keys.RemoveRange(255, amountToReduce);
+            }
+
             foreach (string key in keys)
             {
                 // Get max field width
@@ -415,8 +445,12 @@ namespace OSM2TAB
             MiApi.mitab_c_close(lineTabFile);
 
             m_status = "Done!";
-            m_status = longestString.ToString();
+            //m_status = longestString.ToString();
             m_myForm.Invoke(m_myForm.m_myCurrentWayDelegate);
+
+            // Enable 'Go' button
+            m_goButtonEnabled = true;
+            m_myForm.Invoke(m_myForm.m_myGoButtonEnabledDelegate);
         }
 
         public Form1()
@@ -425,6 +459,8 @@ namespace OSM2TAB
 
             m_myMaxWaysDelegate = new delegateSetMaxWays(setMaxWays);
             m_myCurrentWayDelegate = new delegateSetCurrentWay(setCurrentWay);
+            m_myDebugDelegate = new delegateSetDebug(setDebug);
+            m_myGoButtonEnabledDelegate = new delegateGoButtonEnabled(setGoButtonEnabled);
             m_myForm = this;
         }
 
