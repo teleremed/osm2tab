@@ -265,13 +265,13 @@ namespace OSM2TAB
             int index = 0;
 
             // Max MapInfo fields is 255 (not 256 it seems)
-            if (keys.Count > 255)
+            if (keys.Count > 250)
             {
                 m_debug += "Too many fields";
                 m_myForm.Invoke(m_myForm.m_myDebugDelegate);
 
-                int amountToReduce = keys.Count - 255;
-                keys.RemoveRange(255, amountToReduce);
+                int amountToReduce = keys.Count - 250;
+                keys.RemoveRange(250, amountToReduce);
             }
 
             foreach (string key in keys)
@@ -381,7 +381,8 @@ namespace OSM2TAB
                         }
                     }
 
-                    if(!(!styleFoundForThisFeature && optimalRegions)) // Only write feature to TAB if style is specified
+                    if (!(!styleFoundForThisFeature && optimalRegions) && // Only write feature to TAB if style is specified
+                        way.tags.Count != 0) // Don't write feature if it has no tags. TODO make this optional in Theme xml file
                     {
                         MiApi.mitab_c_write_feature(regionTabFile, feat);
                     }
@@ -431,7 +432,8 @@ namespace OSM2TAB
                         }
                     }
 
-                    if (!(!styleFoundForThisFeature && optimalLines)) // Only write feature to TAB if style is specified
+                    if (!(!styleFoundForThisFeature && optimalLines) && // Only write feature to TAB if style is specified
+                        way.tags.Count != 0) // Don't write feature if it has no tags. TODO make this optional in Theme xml file
                     {
                         MiApi.mitab_c_write_feature(lineTabFile, feat);
                     }
