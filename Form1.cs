@@ -20,6 +20,7 @@ namespace OSM2TAB
         {
             public double lat;
             public double lon;
+            public SortedList tags;
         }
 
         public class TagInfo
@@ -131,6 +132,8 @@ namespace OSM2TAB
 
             WayInfo currentWay = null;
 
+            NodeInfo currentNode = null;
+
            
             m_status = "Starting";
             m_myForm.Invoke(m_myForm.m_myCurrentWayDelegate);
@@ -161,6 +164,9 @@ namespace OSM2TAB
                             int id = Convert.ToInt32(reader.GetAttribute("id"));
 
                             NodeInfo node = new NodeInfo();
+                            node.tags = new SortedList();
+                           
+
                             node.lat = Convert.ToDouble(reader.GetAttribute("lat"));
                             node.lon = Convert.ToDouble(reader.GetAttribute("lon"));
                             if(!nodeList.Contains(id))
@@ -169,6 +175,9 @@ namespace OSM2TAB
                             {
                                 // need to trace data source error
                             }
+
+                            currentWay = null;
+                            currentNode = node;
                         }
                         else if (reader.Name.Equals("way"))
                         {  
@@ -188,7 +197,8 @@ namespace OSM2TAB
                                 currentWay.corrupt = true;
                             }
 
-                            currentWay = way;  
+                            currentWay = way;
+                            currentNode = null;
                         }
                         else if (reader.Name.Equals("nd"))
                         {
@@ -209,13 +219,22 @@ namespace OSM2TAB
                         else if (reader.Name.Equals("tag"))
                         {
                             // Way Tags
-                            if (currentWay != null)
-                            {
+                            //if (currentWay != null)
+                            //{
                                 // Way Keys only
                                 TagInfo ki = new TagInfo();
                                 ki.k = reader.GetAttribute("k");
                                 ki.v = reader.GetAttribute("v");
-                                currentWay.tags.Add(ki.k, ki);
+
+                                if (currentWay != null)
+                                {
+                                   currentWay.tags.Add(ki.k, ki);
+                                }
+
+                                if (currentNode != null)
+                                {
+                                   currentNode.tags.Add(ki.k, ki);
+                                }
 
                                 // Compile list of tags for TAB fields if not specified in theme.xml
                                 if ((keyNodeList.Count == 0) && !keys.Contains(ki.k))
@@ -241,7 +260,7 @@ namespace OSM2TAB
                                 // log longest string
                                 if (ki.v.Length > longestString)
                                     longestString = ki.v.Length;
-                            }
+                            //}
                             //else if (currentRelation blah blah != null)
                             //{
                             //}
@@ -249,6 +268,7 @@ namespace OSM2TAB
                         else if (reader.Name.Equals("relation"))
                         {
                             currentWay = null;
+                            currentNode = null;
                             int a = 0;
                             int b = a + 1;
                         }
@@ -260,6 +280,7 @@ namespace OSM2TAB
             // Create MapInfo tabs
             IntPtr regionTabFile = MiApi.mitab_c_create(outputTextBox.Text + "\\" + tabPrefix.Text + "_region.tab", "tab", "Earth Projection 1, 104", 0, 0, 0, 0);
             IntPtr lineTabFile = MiApi.mitab_c_create(outputTextBox.Text + "\\" + tabPrefix.Text + "_line.tab", "tab", "Earth Projection 1, 104", 0, 0, 0, 0);
+            IntPtr pointTabFile = MiApi.mitab_c_create(outputTextBox.Text + "\\" + tabPrefix.Text + "_point.tab", "tab", "Earth Projection 1, 104", 0, 0, 0, 0);
 
             // Create fields
             int index = 0;
@@ -283,12 +304,14 @@ namespace OSM2TAB
                 {
                     MiApi.mitab_c_add_field(regionTabFile, key, 1, tkl.max, 0, 0, 0);
                     MiApi.mitab_c_add_field(lineTabFile, key, 1, tkl.max, 0, 0, 0);
+                    MiApi.mitab_c_add_field(pointTabFile, key, 1, tkl.max, 0, 0, 0);
                 }
                 else
                 {
                     // No key exists in the dataset so there is no max length - make it 32
                     MiApi.mitab_c_add_field(regionTabFile, key, 1, 32, 0, 0, 0);
                     MiApi.mitab_c_add_field(lineTabFile, key, 1, 32, 0, 0, 0);
+                    MiApi.mitab_c_add_field(pointTabFile, key, 1, 32, 0, 0, 0);
                 }
 
                 index++;
@@ -297,6 +320,20 @@ namespace OSM2TAB
             // Create MapInfo tabs from cached database
             m_maxWays = wayList.Count;
             m_myForm.Invoke(m_myForm.m_myMaxWaysDelegate);
+
+            // Points
+            for (int i = 0; i < nodeList.Count; i++)
+            {
+               NodeInfo node = (NodeInfo)nodeList.GetByIndex(i);
+
+               // If a node has tags then it's a point object.
+               // Not entirely convinced this is the best way to deduce point objects.
+               if (node.tags.Count >= 1)
+               {
+
+
+               }
+            }
   
             // Lines and Regions
             for (int i = 0; i < wayList.Count; i++)
