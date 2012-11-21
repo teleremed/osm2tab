@@ -54,7 +54,7 @@
             this.inputTextBox.Name = "inputTextBox";
             this.inputTextBox.Size = new System.Drawing.Size(465, 20);
             this.inputTextBox.TabIndex = 1;
-            this.inputTextBox.Text = "c:\\osm\\luxembourg.bz2";
+            this.inputTextBox.Text = "c:\\osm\\luxembourg.osm.bz2";
             // 
             // buttonGo
             // 
