@@ -11,6 +11,8 @@ using System.Xml;
 using EBop.MapObjects.MapInfo;
 using System.Threading;
 using System.Collections;
+using ICSharpCode.SharpZipLib;
+
 
 namespace OSM2TAB
 {
@@ -122,7 +124,10 @@ namespace OSM2TAB
                     optimalLines = optimalLineStylesNode.Value == "yes";
 
             // Load OSM data
-            XmlTextReader reader = new XmlTextReader(inputTextBox.Text);
+            System.IO.FileStream bz2Stream = System.IO.File.OpenRead(inputTextBox.Text);
+            ICSharpCode.SharpZipLib.BZip2.BZip2InputStream osmStream = new ICSharpCode.SharpZipLib.BZip2.BZip2InputStream(bz2Stream);
+
+            XmlTextReader reader = new XmlTextReader(osmStream);
 
             SortedList nodeList = new SortedList();
 
@@ -546,7 +551,7 @@ namespace OSM2TAB
             openOSMFileDialog.DefaultExt = "osm";
             openOSMFileDialog.CheckPathExists = true;
             openOSMFileDialog.CheckFileExists = true;
-            openOSMFileDialog.Filter = "OpenStreetMap files (*.osm)|*.osm|All files (*.*)|*.*";
+            openOSMFileDialog.Filter = "OpenStreetMap files (*.bz2)|*.bz2|All files (*.*)|*.*";
             openOSMFileDialog.ShowDialog();
 
             inputTextBox.Text = openOSMFileDialog.FileName;
