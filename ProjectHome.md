@@ -1,0 +1,1 @@
+Translator to Convert OpenStreetMap OSM XML to MapInfo TAB Tables
